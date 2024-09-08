@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom';
 import routes from './routes';
 import ProductsPage from './pages/ProductsListPage';
+import ProductPage from './pages/ProductItemPage';
 
 const App = () => {
 
@@ -13,6 +14,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Navigate to={routes.products()} />} />
           <Route path={routes.products()} element={<ProductsPage />} />
+          <Route path={`${routes.product(':id')}`} element={<ProductPage />} />
         </Routes>
       </Router>
   );

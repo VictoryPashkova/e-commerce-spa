@@ -51,7 +51,7 @@ const ProductsPage: React.FC = () => {
           .catch(error => {
               console.error('Error fetching data', error);
           });
-  }, [dispatch]);
+  }, []);
 
 
   const handleFavoriteClick = (productId: number) => {
@@ -93,3 +93,4 @@ const ProductsPage: React.FC = () => {
   };
   
   export default ProductsPage;
+  

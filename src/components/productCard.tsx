@@ -22,7 +22,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleFavoriteClick,
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
       <Card sx={{ width: 320, height: 400, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '10px' }}>
-        <CardActionArea>
+        <CardActionArea component={Link} to={`/products/${product.id}`}>
           <CardMedia
             component="img"
             alt={product.title}
