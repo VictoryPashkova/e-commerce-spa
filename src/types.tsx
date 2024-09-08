@@ -5,12 +5,12 @@ export type Product = {
     price: number;
     description: string;
     brand: string;
-    dimensions: {
+    dimensions?: {
       height: number;
       width: number;
       depth: number;
     },
-    rating: number;
+    rating?: number;
     category: string;
     isFavorite: boolean;
   };

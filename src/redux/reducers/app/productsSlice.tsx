@@ -10,7 +10,12 @@ const productsSlice = createSlice({
   initialState,
   reducers: {
     setProducts: (state, action: PayloadAction<Product[]>) => {
-      state.products = action.payload;
+      const newProducts = action.payload;
+      const uniqueProducts = newProducts.filter((newProduct: Product) =>
+        !state.products.some((existingProduct: Product) => existingProduct.id === newProduct.id)
+      );
+
+      state.products = [...state.products, ...uniqueProducts];
     },
     removeProduct: (state, action: PayloadAction<number>) => {
         const id = action.payload;
@@ -33,10 +38,13 @@ const productsSlice = createSlice({
         }
         return product;
       });
+    },
+    addNewProduct: (state, action: PayloadAction<Product>) => {
+      state.products = [...state.products, action.payload];
     }
   },
 });
 
-export const { setProducts, removeProduct, addFavoriteProduct, removeFavoriteProduct } = productsSlice.actions;
+export const { setProducts, removeProduct, addFavoriteProduct, removeFavoriteProduct, addNewProduct } = productsSlice.actions;
 
 export default productsSlice.reducer;

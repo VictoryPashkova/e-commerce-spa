@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Grid from '@mui/material/Grid2';
 import { Container } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 import axios, { isCancel, AxiosError } from 'axios';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import Button from '@mui/material/Button';
 
 import { Product } from '../types';
 import { selectProducts } from '../redux/reducers/selectors';
@@ -11,11 +14,13 @@ import { setProducts, removeProduct, addFavoriteProduct, removeFavoriteProduct }
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import ProductCard from '../components/productCard';
+import routes from '../routes';
 
 const ProductsPage: React.FC = () => {
     let products = useSelector(selectProducts);
     const dispatch = useDispatch();
     const [isFiltredFavorites, setIsFiltredFavorites] = useState<boolean>(false);
+    const navigate = useNavigate();
   
     useEffect(() => {
       const categories = [
@@ -76,6 +81,13 @@ const ProductsPage: React.FC = () => {
     if (products) {      
       return (
         <Container maxWidth="xl" sx={{ mt: 4, mb: 4, display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
+          <Button
+          startIcon={<AddCircleOutlineIcon />}
+          variant="outlined"
+          onClick={() => navigate(routes.createProduct())}
+        >
+          Create product
+        </Button>
           <FormControlLabel
           control={
             <Switch name="favorites" checked={isFiltredFavorites} onChange={() => setIsFiltredFavorites(!isFiltredFavorites)}/>

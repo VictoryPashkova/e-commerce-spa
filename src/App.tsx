@@ -6,6 +6,7 @@ import {
 import routes from './routes';
 import ProductsPage from './pages/ProductsListPage';
 import ProductPage from './pages/ProductItemPage';
+import CreateProductPage from './pages/CreateProductPage';
 
 const App = () => {
 
@@ -15,6 +16,7 @@ const App = () => {
           <Route path="/" element={<Navigate to={routes.products()} />} />
           <Route path={routes.products()} element={<ProductsPage />} />
           <Route path={`${routes.product(':id')}`} element={<ProductPage />} />
+          <Route path={routes.createProduct()} element={<CreateProductPage />} />
         </Routes>
       </Router>
   );
