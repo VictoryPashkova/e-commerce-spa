@@ -9,6 +9,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import routes from '../routes';
 import { addNewProduct } from '../redux/reducers/app/productsSlice';
 import { selectProducts } from '../redux/reducers/selectors';
+import createUniqId from '../utils/ createUniqueId';
 
 // Определение схемы валидации с использованием yup
 const schema = object({
@@ -39,24 +40,15 @@ const CreateProductPage: React.FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const products = useSelector(selectProducts);
-    console.log(products);
   
     const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
       resolver: yupResolver(schema),
     });
-
-    const createUniqId = () => {
-        const id = Date.now() + Math.floor(Math.random() * 1000);
-        if (products.some((product) => product.id === id)) {
-            return createUniqId();
-        }
-        return id;
-    }
   
     const onSubmit = (data: FormValues) => {
       const { title, price, description, category, mainImage, secondaryImage, additionalImage, brand } = data;
       const images = [mainImage, secondaryImage, additionalImage];
-      const id = createUniqId();
+      const id = createUniqId(products);
       console.log(id);
       const newProduct = { title, price: Number(price), description, category, images, id, brand, isFavorite: false };
       dispatch(addNewProduct(newProduct));
