@@ -7,12 +7,6 @@ import Container from '@mui/material/Container';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { Product } from '../types';
-import { selectProducts, selectCategories } from '../redux/reducers/selectors';
-import { setProducts, removeProduct, addFavoriteProduct, removeFavoriteProduct } from '../redux/reducers/app/productsSlice';
-import ProductCard from '../components/productCard';
-import routes from '../routes';
-import UIButton from '../ui/buttons/button';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -24,6 +18,14 @@ import createProductItem from '../utils/createProductItem';
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
+import Pagination from '@mui/material/Pagination';
+import { Product } from '../types';
+import { selectProducts, selectCategories } from '../redux/reducers/selectors';
+import { setProducts, removeProduct, addFavoriteProduct, removeFavoriteProduct } from '../redux/reducers/app/productsSlice';
+import ProductCard from '../components/productCard';
+import routes from '../routes';
+import UIButton from '../ui/buttons/button';
+
 
 const ProductsPage: React.FC = () => {
   const products = useSelector(selectProducts);
@@ -44,6 +46,8 @@ const ProductsPage: React.FC = () => {
   const [isFiltredFavorites, setIsFiltredFavorites] = useState<boolean>(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage] = useState<number>(12);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -92,6 +96,16 @@ const ProductsPage: React.FC = () => {
     .filter(product => selectedCategories.length === 0 || selectedCategories.includes(product.category))
     .filter(product => !isFiltredFavorites || product.isFavorite)
     .filter(product => product.title.toLowerCase().includes(searchTerm.toLowerCase()));
+
+  // Пагинация товаров
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentProducts = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Обработка изменения страницы
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setCurrentPage(value);
+  };
 
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
@@ -149,7 +163,7 @@ const ProductsPage: React.FC = () => {
         />
       </FormControl>
       <Grid container spacing={2}>
-        {filteredProducts.map((product: Product) => (
+        {currentProducts.map((product: Product) => (
           <ProductCard
             key={product.id}
             product={product}
@@ -158,6 +172,12 @@ const ProductsPage: React.FC = () => {
           />
         ))}
       </Grid>
+      <Pagination
+        count={Math.ceil(filteredProducts.length / itemsPerPage)} // Количество страниц
+        page={currentPage} // Текущая страница
+        onChange={handlePageChange} // Обработка смены страницы
+        sx={{ mt: 4, display: 'flex', justifyContent: 'center' }} // Стили для выравнивания
+      />
     </Container>
   );
 };
