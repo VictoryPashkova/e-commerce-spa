@@ -1,11 +1,12 @@
 {
-  "name": "trelloboard",
+  "name": "e-commerce-spa",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "deploy": "gh-pages -d dist",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -48,6 +49,7 @@
     "eslint-plugin-react-refresh": "^0.4.6",
     "eslint-plugin-simple-import-sort": "^12.0.0",
     "eslint-plugin-unused-imports": "^3.1.0",
+    "gh-pages": "^6.1.1",
     "prettier": "^3.2.5",
     "sass": "^1.72.0",
     "typescript": "^5.2.2",
