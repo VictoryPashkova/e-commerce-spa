@@ -18,14 +18,12 @@ import createProductItem from '../utils/createProductItem';
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
-import Pagination from '@mui/material/Pagination';
 import { Product } from '../types';
 import { selectProducts, selectCategories } from '../redux/reducers/selectors';
 import { setProducts, removeProduct, addFavoriteProduct, removeFavoriteProduct } from '../redux/reducers/app/productsSlice';
 import ProductCard from '../components/productCard';
 import routes from '../routes';
 import UIButton from '../ui/buttons/button';
-
 
 const ProductsPage: React.FC = () => {
   const products = useSelector(selectProducts);
@@ -37,7 +35,6 @@ const ProductsPage: React.FC = () => {
     PaperProps: {
       style: {
         maxHeight: itemHeight * 4.5 + itemPaddingTop,
-        width: 250,
       },
     },
   };
@@ -46,8 +43,6 @@ const ProductsPage: React.FC = () => {
   const [isFiltredFavorites, setIsFiltredFavorites] = useState<boolean>(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [itemsPerPage] = useState<number>(12);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -97,73 +92,79 @@ const ProductsPage: React.FC = () => {
     .filter(product => !isFiltredFavorites || product.isFavorite)
     .filter(product => product.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
-  // Пагинация товаров
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentProducts = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
-
-  // Обработка изменения страницы
-  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setCurrentPage(value);
-  };
-
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-      <UIButton
-        btnText="Create product"
-        onClick={() => navigate(routes.createProduct())}
-        startIcon={<AddCircleOutlineIcon />}
-        variant='outlined'
-        sx={{ mb: 2 }}
-      />
-      <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="categories">Categories</InputLabel>
-        <Select
-          labelId="categories-select"
-          id="categories-select"
-          multiple
-          value={selectedCategories}
-          onChange={handleChange}
-          input={<OutlinedInput label="Categories" />}
-          renderValue={(selected) => selected.join(', ')}
-          MenuProps={MenuProps}
-        >
-          {categories.map((category) => (
-            <MenuItem key={category.categoryId} value={category.categoryName}>
-              <Checkbox checked={selectedCategories.indexOf(category.categoryName) > -1} />
-              <ListItemText primary={category.categoryName} />
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <FormControlLabel
-        control={
-          <Switch
-            name="favorites"
-            checked={isFiltredFavorites}
-            onChange={() => setIsFiltredFavorites(!isFiltredFavorites)}
+      <Grid container spacing={2} justifyContent="flex-end" alignItems="center">
+        <Grid>
+          <UIButton
+            btnText="Create product"
+            onClick={() => navigate(routes.createProduct())}
+            startIcon={<AddCircleOutlineIcon />}
+            variant="outlined"
+            sx={{ mb: 2, minWidth: 150 }}
           />
-        }
-        label="Favorites"
-        sx={{ mb: 2, ml: 4 }}
-      />
-      <FormControl fullWidth variant="standard" sx={{ mb: 2 }}>
-        <InputLabel htmlFor="search">
-          Search
-        </InputLabel>
-        <Input
-          id="search"
-          value={searchTerm}
-          onChange={handleSearchChange}
-          startAdornment={
-            <InputAdornment position="start">
-              <SearchIcon />
-            </InputAdornment>
-          }
-        />
-      </FormControl>
+        </Grid>
+
+        <Grid>
+          <FormControlLabel
+            control={
+              <Switch
+                name="favorites"
+                checked={isFiltredFavorites}
+                onChange={() => setIsFiltredFavorites(!isFiltredFavorites)}
+              />
+            }
+            label="Favorites"
+            sx={{ mb: 2 }}
+          />
+        </Grid>
+      </Grid>
+
+      <Grid container spacing={2} justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
+        <Grid size={{ xs: 12, sm: 8, md: 9 }}>
+          <FormControl fullWidth variant="standard">
+            <InputLabel htmlFor="search">
+              Search
+            </InputLabel>
+            <Input
+              id="search"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              startAdornment={
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+        </Grid>
+
+        <Grid size={{ xs: 12, sm: 4, md: 3 }}>
+          <FormControl fullWidth>
+            <InputLabel id="categories">Categories</InputLabel>
+            <Select
+              labelId="categories-select"
+              id="categories-select"
+              multiple
+              value={selectedCategories}
+              onChange={handleChange}
+              input={<OutlinedInput label="Categories" />}
+              renderValue={(selected) => selected.join(', ')}
+              MenuProps={MenuProps}
+            >
+              {categories.map((category) => (
+                <MenuItem key={category.categoryId} value={category.categoryName}>
+                  <Checkbox checked={selectedCategories.indexOf(category.categoryName) > -1} />
+                  <ListItemText primary={category.categoryName} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+      </Grid>
+
       <Grid container spacing={2}>
-        {currentProducts.map((product: Product) => (
+        {filteredProducts.map((product: Product) => (
           <ProductCard
             key={product.id}
             product={product}
@@ -172,15 +173,8 @@ const ProductsPage: React.FC = () => {
           />
         ))}
       </Grid>
-      <Pagination
-        count={Math.ceil(filteredProducts.length / itemsPerPage)} // Количество страниц
-        page={currentPage} // Текущая страница
-        onChange={handlePageChange} // Обработка смены страницы
-        sx={{ mt: 4, display: 'flex', justifyContent: 'center' }} // Стили для выравнивания
-      />
     </Container>
   );
 };
 
 export default ProductsPage;
-  

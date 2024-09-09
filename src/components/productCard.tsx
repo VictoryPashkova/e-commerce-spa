@@ -21,15 +21,13 @@ type ProductCardProps = {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, handleFavoriteClick, handleRemoveCard }) => {
   return (
-    <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+    <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }} justifyContent='space-between'>
       <Card
         sx={{
-          width: 320,
           height: 370,
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          padding: '10px'
         }}
       >
         <CardActionArea component={Link} to={`/products/${product.id}`}>
