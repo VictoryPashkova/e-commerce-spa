@@ -18,3 +18,14 @@ export type Product = {
   export type ProductsState = {
     products: Product[];
   };
+
+  export type FormValues = {
+    title: string;
+    price: number;
+    description: string;
+    category: string;
+    mainImage: string;
+    secondaryImage: string;
+    additionalImage: string;
+    brand: string;
+  };
