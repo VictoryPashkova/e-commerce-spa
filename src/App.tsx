@@ -11,7 +11,7 @@ import CreateProductPage from './pages/CreateProductPage';
 const App = () => {
 
   return (
-      <Router basename="/e-commerce-spa">
+      <Router>
         <Routes>
           <Route path="/" element={<Navigate to={routes.products()} />} />
           <Route path={routes.products()} element={<ProductsPage />} />
