@@ -21,11 +21,22 @@ import FormControl from '@mui/material/FormControl';
 import ListItemText from '@mui/material/ListItemText';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
+import createProductItem from '../utils/createProductItem';
 
 const ProductsPage: React.FC = () => {
   const products = useSelector(selectProducts);
   const categories = useSelector(selectCategories);
   const dataLink = 'https://dummyjson.com/products/category/';
+  const itemHeight = 48;
+  const itemPaddingTop = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: itemHeight * 4.5 + itemPaddingTop,
+        width: 250,
+      },
+    },
+  };
 
   const dispatch = useDispatch();
   const [isFiltredFavorites, setIsFiltredFavorites] = useState<boolean>(false);
@@ -35,18 +46,8 @@ const ProductsPage: React.FC = () => {
   useEffect(() => {
     const fetchCategoryProducts = async (category: string) => {
       const response = await axios.get(`${dataLink}${category}`);
-      return response.data.products.map((product: Product) => ({
-        id: product.id,
-        title: product.title,
-        images: product.images,
-        price: product.price,
-        description: product.description,
-        brand: product.brand,
-        dimensions: product.dimensions,
-        rating: product.rating,
-        category: product.category,
-        isFavorite: false,
-      }));
+      return response.data.products.map((product: Product) => (
+        createProductItem(product)));
     };
 
     Promise.all(categories.map(category => fetchCategoryProducts(category.categoryName)))
@@ -58,17 +59,6 @@ const ProductsPage: React.FC = () => {
         console.error('Error fetching data', error);
       });
   }, [dispatch, categories]);
-
-  const itemHeight = 48;
-const itemPaddingTop = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: itemHeight * 4.5 + itemPaddingTop,
-      width: 250,
-    },
-  },
-};
 
   const handleFavoriteClick = (productId: number) => {
     if (products.some((product: Product) => (product.id === productId) && (product.isFavorite))) {
@@ -91,7 +81,6 @@ const MenuProps = {
     );
   };
 
-  // Фильтрация продуктов по выбранным категориям и состоянию "избранное"
   const filteredProducts = products
     .filter(product => selectedCategories.length === 0 || selectedCategories.includes(product.category))
     .filter(product => !isFiltredFavorites || product.isFavorite);
