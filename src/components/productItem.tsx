@@ -28,10 +28,21 @@ const ProductItem: React.FC<Props> = ({currentProduct}) => {
   const [selectedImage, setSelectedImage] = useState(images[0]);
 
   return (
-    <Grid container spacing={4} sx={{ ml: 16, mr: 16, mt: 16}}>
+    <Box
+    display="flex" 
+    justifyContent="center" 
+    alignItems="center" 
+    sx={{ 
+      minHeight: '100vh',
+      mx: 'auto',
+      maxWidth: 'lg',
+      gap: 4 
+    }}
+    >
+    <Grid container spacing={4} justifyContent='center' alignItems='center'>
       <Grid size={{ xs: 6, md: 4 }}>
         <MainImage src={selectedImage} alt="Product" />
-        <Grid container spacing={1}>
+        <Grid container spacing={1} justifyContent='center' alignItems='center'>
           {images.map((image, index) => (
             <Grid key={index}>
               <Thumbnail
@@ -74,6 +85,7 @@ const ProductItem: React.FC<Props> = ({currentProduct}) => {
         </Box>
       </Grid>
     </Grid>
+    </Box>
   );
 };
 
