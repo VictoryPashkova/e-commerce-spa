@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button, Grid, IconButton, TextField } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { Box, Typography } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 import { styled } from '@mui/system';
-import { useSelector } from 'react-redux';
-import { selectProducts } from '../redux/reducers/selectors';
 import { Product } from '../types';
 
 const MainImage = styled('img')({
@@ -30,12 +28,12 @@ const ProductItem: React.FC<Props> = ({currentProduct}) => {
   const [selectedImage, setSelectedImage] = useState(images[0]);
 
   return (
-    <Grid container spacing={4} display="flex" justifyContent="center" alignItems='center' padding={4} height='100vh'>
-      <Grid item xs={12} md={6} display="flex" justifyContent="center" flexDirection='column'>
+    <Grid container spacing={4} sx={{ ml: 16, mr: 16, mt: 16}}>
+      <Grid size={{ xs: 6, md: 4 }}>
         <MainImage src={selectedImage} alt="Product" />
-        <Grid container spacing={2} justifyContent="center" marginTop={2}>
+        <Grid container spacing={1}>
           {images.map((image, index) => (
-            <Grid item key={index}>
+            <Grid key={index}>
               <Thumbnail
                 src={image}
                 alt={`Thumbnail ${index}`}
@@ -46,9 +44,8 @@ const ProductItem: React.FC<Props> = ({currentProduct}) => {
           ))}
         </Grid>
       </Grid>
-
-      <Grid item xs={12} md={6}>
-        <Box padding={2}>
+      <Grid size={{ xs: 12, md: 6 }}>
+        <Box padding={2} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography 
           variant="h2" 
           gutterBottom 

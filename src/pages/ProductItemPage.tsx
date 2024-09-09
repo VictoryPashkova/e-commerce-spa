@@ -8,6 +8,7 @@ import { selectProducts } from '../redux/reducers/selectors';
 import { useNavigate } from 'react-router-dom';
 import routes from '../routes';
 import ProductItem from '../components/productItem';
+import { Container } from '@mui/material';
 
 const ProductPage: React.FC = () => {
   const navigate = useNavigate();
@@ -18,8 +19,7 @@ const ProductPage: React.FC = () => {
   if (currentProduct) {
     return (
       <>
-        <Grid container spacing={2}>
-          <Grid size={12} sx={{ mt: 4, ml: 4 }}>
+        <Container maxWidth="xl" sx={{ mt: 4 }}>
             <Button
               startIcon={<ArrowBackIcon />}
               variant="outlined"
@@ -28,8 +28,7 @@ const ProductPage: React.FC = () => {
               Back to products
             </Button>
             <ProductItem currentProduct={currentProduct} />
-          </Grid>
-        </Grid>
+        </Container>
       </>
     );
   }
