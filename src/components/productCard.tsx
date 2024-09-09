@@ -21,7 +21,7 @@ type ProductCardProps = {
 const ProductCard: React.FC<ProductCardProps> = ({ product, handleFavoriteClick, handleRemoveCard }) => {
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
-      <Card sx={{ width: 320, height: 400, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '10px' }}>
+      <Card sx={{ width: 320, height: 370, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '10px' }}>
         <CardActionArea component={Link} to={`/products/${product.id}`}>
           <CardMedia
             component="img"
@@ -31,30 +31,47 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleFavoriteClick,
             sx={{ objectFit: 'contain', padding: '10px' }}
           />
           <CardContent>
-            <Typography gutterBottom variant="h6" component="div">
+            <Typography 
+              gutterBottom 
+              variant="h6" 
+              component="div"
+              sx={{ 
+                height: '4rem',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'normal',
+                display: '-webkit-box',
+                WebkitBoxOrient: 'vertical',
+                WebkitLineClamp: 2,
+                wordBreak: 'break-word',
+              }}
+              >
               {product.title}
             </Typography>
           </CardContent>
+          <CardActions>
+  <button onClick={(e) => e.preventDefault()}>
+    <IconButton
+      aria-label="favorite"
+      size="small"
+      onClick={() => handleFavoriteClick(product.id)}
+      sx={{ color: product.isFavorite ? 'red' : 'inherit' }}
+    >
+      <FavoriteIcon />
+    </IconButton>
+  </button>
+  <button onClick={(e) => e.preventDefault()}>
+    <IconButton
+      aria-label="delete"
+      size="small"
+      onClick={() => handleRemoveCard(product.id)}
+      sx={{ color: 'inherit' }}
+    >
+      <DeleteIcon />
+    </IconButton>
+  </button>
+</CardActions>
         </CardActionArea>
-
-        <CardActions>
-          <IconButton aria-label="favorite" size="small" onClick={(e) => {
-              e.stopPropagation();
-              handleFavoriteClick(product.id);
-            }}
-            sx={{ color: product.isFavorite ? 'red' : 'inherit' }}
-          >
-            <FavoriteIcon />
-          </IconButton>
-          <IconButton aria-label="delete" size="small" onClick={(e) => {
-              e.stopPropagation();
-              handleRemoveCard(product.id);
-            }}
-            sx={{ color: 'inherit' }}
-          >
-            <DeleteIcon />
-          </IconButton>
-        </CardActions>
       </Card>
     </Grid>
   );

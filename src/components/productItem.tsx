@@ -49,10 +49,26 @@ const ProductItem: React.FC<Props> = ({currentProduct}) => {
 
       <Grid item xs={12} md={6}>
         <Box padding={2}>
-          <Typography variant="h2" gutterBottom fontWeight='bold'>
+          <Typography 
+          variant="h2" 
+          gutterBottom 
+          fontWeight='bold'
+          sx={{ 
+            overflow: 'hidden',
+            whiteSpace: 'normal',
+            wordBreak: 'break-word',
+          }}>
             {currentProduct?.title}
           </Typography>
-          <Typography variant="body1" gutterBottom>
+          <Typography 
+          variant="body1" 
+          gutterBottom
+          sx={{ 
+            overflow: 'hidden',
+            whiteSpace: 'normal',
+            wordBreak: 'break-word',
+          }}
+          >
             {currentProduct?.description}
           </Typography>
           <Typography variant="h5" color="primary" gutterBottom fontWeight='bold'>
