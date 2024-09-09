@@ -7,100 +7,149 @@ import Grid from '@mui/material/Grid2';
 import Container from '@mui/material/Container';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
-
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-
 import { Product } from '../types';
-import { selectProducts } from '../redux/reducers/selectors';
+import { selectProducts, selectCategories } from '../redux/reducers/selectors';
 import { setProducts, removeProduct, addFavoriteProduct, removeFavoriteProduct } from '../redux/reducers/app/productsSlice';
 import ProductCard from '../components/productCard';
 import routes from '../routes';
 import UIButton from '../ui/buttons/button';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import ListItemText from '@mui/material/ListItemText';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Checkbox from '@mui/material/Checkbox';
 
 const ProductsPage: React.FC = () => {
-  let products = useSelector(selectProducts);
+  const products = useSelector(selectProducts);
+  const categories = useSelector(selectCategories);
+  const dataLink = 'https://dummyjson.com/products/category/';
+
   const dispatch = useDispatch();
   const [isFiltredFavorites, setIsFiltredFavorites] = useState<boolean>(false);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const categories = [
-        'fragrances',
-        'womens-bags',
-        'sunglasses',
-        'womens-watches',
-        'womens-jewellery'
-    ];
-    
     const fetchCategoryProducts = async (category: string) => {
-        const response = await axios.get(`https://dummyjson.com/products/category/${category}`);
-        return response.data.products.map((product: Product) => ({
-            id: product.id,
-            title: product.title,
-            images: product.images,
-            price: product.price,
-            description: product.description,
-            brand: product.brand,
-            dimensions: product.dimensions,
-            rating: product.rating,
-            category: product.category,
-            isFavorite: false,
-        }));
+      const response = await axios.get(`${dataLink}${category}`);
+      return response.data.products.map((product: Product) => ({
+        id: product.id,
+        title: product.title,
+        images: product.images,
+        price: product.price,
+        description: product.description,
+        brand: product.brand,
+        dimensions: product.dimensions,
+        rating: product.rating,
+        category: product.category,
+        isFavorite: false,
+      }));
     };
 
-    Promise.all(categories.map(category => fetchCategoryProducts(category)))
-        .then(results => {
-            const allProducts = results.flat();
-            dispatch(setProducts(allProducts));
-        })
-        .catch(error => {
-            console.error('Error fetching data', error);
-        });
-}, [dispatch]);
+    Promise.all(categories.map(category => fetchCategoryProducts(category.categoryName)))
+      .then(results => {
+        const allProducts = results.flat();
+        dispatch(setProducts(allProducts));
+      })
+      .catch(error => {
+        console.error('Error fetching data', error);
+      });
+  }, [dispatch, categories]);
 
-const handleFavoriteClick = (productId: number) => {
-  if (products.some((product: Product) => (product.id === productId) && (product.isFavorite))) {
-    dispatch(removeFavoriteProduct(productId));
-  } else {
-    dispatch(addFavoriteProduct(productId));
-  }
+  const itemHeight = 48;
+const itemPaddingTop = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: itemHeight * 4.5 + itemPaddingTop,
+      width: 250,
+    },
+  },
 };
 
-const handleRemoveCard = (productId: number) => {
-  dispatch(removeProduct(productId));
-};
+  const handleFavoriteClick = (productId: number) => {
+    if (products.some((product: Product) => (product.id === productId) && (product.isFavorite))) {
+      dispatch(removeFavoriteProduct(productId));
+    } else {
+      dispatch(addFavoriteProduct(productId));
+    }
+  };
 
- if (isFiltredFavorites) {
-   products = products.filter(product => product.isFavorite);
- }
+  const handleRemoveCard = (productId: number) => {
+    dispatch(removeProduct(productId));
+  };
 
- return (
-   <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-    <UIButton btnText="Create product" onClick={() => navigate(routes.createProduct())} startIcon={<AddCircleOutlineIcon />} variant='outlined' sx={{ mb: 2 }}/>
-     <FormControlLabel
-       control={
-         <Switch
-           name="favorites"
-           checked={isFiltredFavorites}
-           onChange={() => setIsFiltredFavorites(!isFiltredFavorites)}
-         />
-       }
-       label="Favorites"
-       sx={{ mb: 2, ml: 4 }}
-     />
-     <Grid container spacing={2}>
-       {products.map((product: Product) => (
-         <ProductCard
-           key={product.id}
-           product={product}
-           handleFavoriteClick={handleFavoriteClick}
-           handleRemoveCard={handleRemoveCard}
-         />
-       ))}
-     </Grid>
-   </Container>
- );
+  const handleChange = (event: SelectChangeEvent<typeof selectedCategories>) => {
+    const {
+      target: { value },
+    } = event;
+    setSelectedCategories(
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  };
+
+  // Фильтрация продуктов по выбранным категориям и состоянию "избранное"
+  const filteredProducts = products
+    .filter(product => selectedCategories.length === 0 || selectedCategories.includes(product.category))
+    .filter(product => !isFiltredFavorites || product.isFavorite);
+
+  return (
+    <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+      <UIButton
+        btnText="Create product"
+        onClick={() => navigate(routes.createProduct())}
+        startIcon={<AddCircleOutlineIcon />}
+        variant='outlined'
+        sx={{ mb: 2 }}
+      />
+      <FormControl sx={{ m: 1, width: 300 }}>
+        <InputLabel id="demo-multiple-checkbox-label">Categories</InputLabel>
+        <Select
+          labelId="demo-multiple-checkbox-label"
+          id="demo-multiple-checkbox"
+          multiple
+          value={selectedCategories}
+          onChange={handleChange}
+          input={<OutlinedInput label="Categories" />}
+          renderValue={(selected) => selected.join(', ')}
+          MenuProps={MenuProps}
+        >
+          {categories.map((category) => (
+            <MenuItem key={category.categoryId} value={category.categoryName}>
+              <Checkbox checked={selectedCategories.indexOf(category.categoryName) > -1} />
+              <ListItemText primary={category.categoryName} />
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <FormControlLabel
+        control={
+          <Switch
+            name="favorites"
+            checked={isFiltredFavorites}
+            onChange={() => setIsFiltredFavorites(!isFiltredFavorites)}
+          />
+        }
+        label="Favorites"
+        sx={{ mb: 2, ml: 4 }}
+      />
+      <Grid container spacing={2}>
+        {filteredProducts.map((product: Product) => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            handleFavoriteClick={handleFavoriteClick}
+            handleRemoveCard={handleRemoveCard}
+          />
+        ))}
+      </Grid>
+    </Container>
+  );
 };
 
 export default ProductsPage;
+
   

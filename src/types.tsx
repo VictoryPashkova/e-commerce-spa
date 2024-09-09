@@ -15,8 +15,14 @@ export type Product = {
     isFavorite: boolean;
   };
 
+  export type Category = {
+    categoryName: string;
+    categoryId: number;
+  }
+
   export type ProductsState = {
     products: Product[];
+    categories: Category[];
   };
 
   export type FormValues = {

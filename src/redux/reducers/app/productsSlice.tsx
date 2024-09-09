@@ -1,8 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProductsState, Product } from '../../../types';
 
+const initialCategories = [
+  {categoryName: 'fragrances', categoryId: 1},
+  {categoryName: 'womens-bags', categoryId: 2},
+  {categoryName: 'sunglasses', categoryId: 3},
+  {categoryName: 'womens-watches', categoryId: 4},
+  {categoryName: 'womens-jewellery', categoryId: 5},
+];
+
 const initialState: ProductsState = {
   products: [],
+  categories: initialCategories,
 };
 
 const productsSlice = createSlice({

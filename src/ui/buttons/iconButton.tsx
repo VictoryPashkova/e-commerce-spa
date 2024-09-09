@@ -11,13 +11,13 @@ type IconButtonUIProps = {
 const IconButtonUI: React.FC<IconButtonUIProps> = ({ onClick, Icon, ariaLabel, sx }) => {
   return (
     <button onClick={(e) => e.preventDefault()}>
-          <IconButton
-            aria-label={ariaLabel}
-            size="small"
-            onClick={onClick}
-            sx={sx}
-            >
-           {Icon}
+      <IconButton
+        aria-label={ariaLabel}
+        size="small"
+        onClick={onClick}
+        sx={sx}
+        >
+        {Icon}
       </IconButton>
     </button>
   );
