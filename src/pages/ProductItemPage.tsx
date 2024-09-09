@@ -1,14 +1,13 @@
 import React from 'react';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid2';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectProducts } from '../redux/reducers/selectors';
 import { useNavigate } from 'react-router-dom';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Container } from '@mui/material';
 import routes from '../routes';
 import ProductItem from '../components/productItem';
-import { Container } from '@mui/material';
+import UIButton from '../ui/buttons/button';
 
 const ProductPage: React.FC = () => {
   const navigate = useNavigate();
@@ -20,14 +19,8 @@ const ProductPage: React.FC = () => {
     return (
       <>
         <Container maxWidth="xl" sx={{ mt: 4 }}>
-            <Button
-              startIcon={<ArrowBackIcon />}
-              variant="outlined"
-              onClick={() => navigate(routes.products())}
-            >
-              Back to products
-            </Button>
-            <ProductItem currentProduct={currentProduct} />
+          <UIButton btnText="Back to products" onClick={() => navigate(routes.products())} startIcon={<ArrowBackIcon />} variant='outlined'/>
+          <ProductItem currentProduct={currentProduct} />
         </Container>
       </>
     );
