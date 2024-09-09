@@ -40,7 +40,7 @@ const productsSlice = createSlice({
       });
     },
     addNewProduct: (state, action: PayloadAction<Product>) => {
-      state.products = [...state.products, action.payload];
+      state.products = [action.payload, ...state.products];
     }
   },
 });
