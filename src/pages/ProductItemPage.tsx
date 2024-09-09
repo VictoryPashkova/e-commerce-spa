@@ -17,12 +17,10 @@ const ProductPage: React.FC = () => {
 
   if (currentProduct) {
     return (
-      <>
-        <Container maxWidth="xl" sx={{ mt: 4 }}>
-          <UIButton btnText="Back to products" onClick={() => navigate(routes.products())} startIcon={<ArrowBackIcon />} variant='outlined'/>
-          <ProductItem currentProduct={currentProduct} />
-        </Container>
-      </>
+      <Container maxWidth="xl" sx={{ mt: 4 }}>
+        <UIButton btnText="Back to products" onClick={() => navigate(routes.products())} startIcon={<ArrowBackIcon />} variant='outlined'/>
+        <ProductItem currentProduct={currentProduct} />
+      </Container>
     );
   }
 };

@@ -43,102 +43,102 @@ const CreateProductForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid container spacing={2}>
-            <Grid size={12}>
-              <TextField
-                fullWidth
-                label="Title"
-                variant="outlined"
-                {...register('title')}
-                error={!!errors.title}
-                helperText={errors.title?.message}
-              />
-            </Grid>
-            <Grid size={12}>
-              <TextField
-                fullWidth
-                label="Brand"
-                variant="outlined"
-                {...register('brand')}
-                error={!!errors.brand}
-                helperText={errors.brand?.message}
-              />
-            </Grid>
-            <Grid size={12}>
-              <TextField
-                fullWidth
-                label="Price"
-                variant="outlined"
-                type="number"
-                {...register('price')}
-                error={!!errors.price}
-                helperText={errors.price?.message}
-              />
-            </Grid>
-            <Grid size={12}>
-              <TextField
-                fullWidth
-                label="Description"
-                variant="outlined"
-                multiline
-                rows={4}
-                {...register('description')}
-                error={!!errors.description}
-                helperText={errors.description?.message}
-              />
-            </Grid>
-            <Grid size={12}>
-              <TextField
-                fullWidth
-                label="Category"
-                variant="outlined"
-                {...register('category')}
-                error={!!errors.category}
-                helperText={errors.category?.message}
-              />
-            </Grid>
-            <Grid size={12}>
-              <TextField
-                fullWidth
-                label="Main Image URL"
-                variant="outlined"
-                {...register('mainImage')}
-                error={!!errors.mainImage}
-                helperText={errors.mainImage?.message}
-              />
-            </Grid>
-            <Grid size={12}>
-              <TextField
-                fullWidth
-                label="Secondary Image URL"
-                variant="outlined"
-                {...register('secondaryImage')}
-                error={!!errors.secondaryImage}
-                helperText={errors.secondaryImage?.message}
-              />
-            </Grid>
-            <Grid size={12}>
-              <TextField
-                fullWidth
-                label="Additional Image URL"
-                variant="outlined"
-                {...register('additionalImage')}
-                error={!!errors.additionalImage}
-                helperText={errors.additionalImage?.message}
-              />
-            </Grid>
-            <Grid size={12}>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
-              >
-                Submit
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
+      <Grid container spacing={2}>
+        <Grid size={12}>
+          <TextField
+            fullWidth
+            label="Title"
+            variant="outlined"
+            {...register('title')}
+            error={!!errors.title}
+            helperText={errors.title?.message}
+          />
+        </Grid>
+        <Grid size={12}>
+          <TextField
+            fullWidth
+            label="Brand"
+            variant="outlined"
+            {...register('brand')}
+            error={!!errors.brand}
+            helperText={errors.brand?.message}
+          />
+        </Grid>
+        <Grid size={12}>
+          <TextField
+            fullWidth
+            label="Price"
+            variant="outlined"
+            type="number"
+            {...register('price')}
+            error={!!errors.price}
+            helperText={errors.price?.message}
+          />
+        </Grid>
+        <Grid size={12}>
+          <TextField
+            fullWidth
+            label="Description"
+            variant="outlined"
+            multiline
+            rows={4}
+            {...register('description')}
+            error={!!errors.description}
+            helperText={errors.description?.message}
+          />
+        </Grid>
+        <Grid size={12}>
+          <TextField
+            fullWidth
+            label="Category"
+            variant="outlined"
+            {...register('category')}
+            error={!!errors.category}
+            helperText={errors.category?.message}
+          />
+        </Grid>
+        <Grid size={12}>
+          <TextField
+            fullWidth
+            label="Main Image URL"
+            variant="outlined"
+            {...register('mainImage')}
+            error={!!errors.mainImage}
+            helperText={errors.mainImage?.message}
+          />
+        </Grid>
+        <Grid size={12}>
+          <TextField
+            fullWidth
+            label="Secondary Image URL"
+            variant="outlined"
+            {...register('secondaryImage')}
+            error={!!errors.secondaryImage}
+            helperText={errors.secondaryImage?.message}
+          />
+        </Grid>
+        <Grid size={12}>
+          <TextField
+            fullWidth
+            label="Additional Image URL"
+            variant="outlined"
+            {...register('additionalImage')}
+            error={!!errors.additionalImage}
+            helperText={errors.additionalImage?.message}
+          />
+        </Grid>
+        <Grid size={12}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+          >
+            Submit
+          </Button>
+        </Grid>
+      </Grid>
+    </form>
   );
 };
 
