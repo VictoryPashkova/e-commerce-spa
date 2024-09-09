@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Grid from '@mui/material/Grid2';
 import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
@@ -16,6 +15,7 @@ import { selectProducts } from '../redux/reducers/selectors';
 import { setProducts, removeProduct, addFavoriteProduct, removeFavoriteProduct } from '../redux/reducers/app/productsSlice';
 import ProductCard from '../components/productCard';
 import routes from '../routes';
+import UIButton from '../ui/buttons/button';
 
 const ProductsPage: React.FC = () => {
   let products = useSelector(selectProducts);
@@ -76,14 +76,7 @@ const handleRemoveCard = (productId: number) => {
 
  return (
    <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-     <Button
-       startIcon={<AddCircleOutlineIcon />}
-       variant="outlined"
-       onClick={() => navigate(routes.createProduct())}
-       sx={{ mb: 2 }}
-     >
-       Create product
-     </Button>
+    <UIButton btnText="Create product" onClick={() => navigate(routes.createProduct())} startIcon={<AddCircleOutlineIcon />} variant='outlined' sx={{ mb: 2 }}/>
      <FormControlLabel
        control={
          <Switch
