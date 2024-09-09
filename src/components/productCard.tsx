@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import { IconButton } from '@mui/material';
 import CardActionArea from '@mui/material/CardActionArea';
 import { Product } from '../types';
+import IconButtonUI from '../ui/buttons/iconButton';
 
 type ProductCardProps = {
   product: Product;
@@ -59,26 +60,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleFavoriteClick,
             </Typography>
           </CardContent>
           <CardActions>
-            <button onClick={(e) => e.preventDefault()}>
-              <IconButton
-                aria-label="favorite"
-                size="small"
-                onClick={() => handleFavoriteClick(product.id)}
-                sx={{ color: product.isFavorite ? 'red' : 'inherit' }}
-              >
-                <FavoriteIcon />
-              </IconButton>
-            </button>
-            <button onClick={(e) => e.preventDefault()}>
-              <IconButton
-                aria-label="delete"
-                size="small"
-                onClick={() => handleRemoveCard(product.id)}
-                sx={{ color: 'inherit' }}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </button>
+            <IconButtonUI Icon={<FavoriteIcon />} ariaLabel="favorite" sx={{ color: product.isFavorite ? 'red' : 'inherit' }} onClick={() => handleFavoriteClick(product.id)}/>
+            <IconButtonUI Icon={<DeleteIcon />} ariaLabel="delete" onClick={() => handleRemoveCard(product.id)} sx={{ color: 'inherit' }}/>
           </CardActions>
         </CardActionArea>
       </Card>
