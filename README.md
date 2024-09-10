@@ -7,16 +7,16 @@
 Проект представляет собой одностраничное приложение (SPA) для управления товарами в интернет-магазине. Приложение позволяет пользователям просматривать список продуктов, фильтровать их по категориям и избранным товарам, а также искать товары по названию В приложении также реализована функция создания новых товаров.
 
 ## Стек
-TypeScript
-React
-Redux + Redux-persist
-Material UI
-Styled-components
-React Route
-Yup validation
-Axios
-Sass
-Vite
+- **TypeScript**
+- **React**
+- **Redux + Redux-persist**
+- **Material UI**
+- **Styled-components**
+- **React Route**
+- **Yup validation**
+- **Axios**
+- **Sass**
+- **Vite**
 
 ## Возможности приложения
 
