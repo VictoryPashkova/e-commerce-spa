@@ -9,17 +9,20 @@ type IconButtonUIProps = {
 };
 
 const IconButtonUI: React.FC<IconButtonUIProps> = ({ onClick, Icon, ariaLabel, sx }) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    onClick?.();
+  };
+
   return (
-    <button onClick={(e) => e.preventDefault()}>
-      <IconButton
-        aria-label={ariaLabel}
-        size="small"
-        onClick={onClick}
-        sx={sx}
-        >
-        {Icon}
-      </IconButton>
-    </button>
+    <IconButton
+      aria-label={ariaLabel}
+      size="small"
+      onClick={handleClick}
+      sx={sx}
+    >
+      {Icon}
+    </IconButton>
   );
 };
 
