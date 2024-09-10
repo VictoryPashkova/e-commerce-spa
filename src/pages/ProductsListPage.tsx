@@ -3,20 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Grid from '@mui/material/Grid2';
-import Container from '@mui/material/Container';
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
+import { Container, Switch, FormControlLabel, OutlinedInput, InputLabel, MenuItem, FormControl, ListItemText, Checkbox, Input, InputAdornment } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import ListItemText from '@mui/material/ListItemText';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import Checkbox from '@mui/material/Checkbox';
 import createProductItem from '../utils/createProductItem';
-import Input from '@mui/material/Input';
-import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
 import { Product } from '../types';
 import { selectProducts, selectCategories } from '../redux/reducers/selectors';
@@ -46,24 +36,22 @@ const ProductsPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchCategoryProducts = async (category: string) => {
-      const response = await axios.get(`${dataLink}${category}`);
-      return response.data.products.map((product: Product) => (
-        createProductItem(product)));
+    const fetchProducts = async () => {
+      try {
+        const promises = categories.map(category => axios.get(`${dataLink}${category.categoryName}`));
+        const results = await Promise.all(promises);
+        const allProducts = results.flatMap(result => result.data.products.map(createProductItem));
+        dispatch(setProducts(allProducts));
+      } catch (error) {
+        console.error('Error fetching data', error);
+      }
     };
 
-    Promise.all(categories.map(category => fetchCategoryProducts(category.categoryName)))
-      .then(results => {
-        const allProducts = results.flat();
-        dispatch(setProducts(allProducts));
-      })
-      .catch(error => {
-        console.error('Error fetching data', error);
-      });
+    fetchProducts();
   }, [dispatch, categories]);
 
   const handleFavoriteClick = (productId: number) => {
-    if (products.some((product: Product) => (product.id === productId) && (product.isFavorite))) {
+    if (products?.some((product: Product) => (product?.id === productId) && (product?.isFavorite))) {
       dispatch(removeFavoriteProduct(productId));
     } else {
       dispatch(addFavoriteProduct(productId));
@@ -71,7 +59,9 @@ const ProductsPage: React.FC = () => {
   };
 
   const handleRemoveCard = (productId: number) => {
-    dispatch(removeProduct(productId));
+    if (productId) {
+      dispatch(removeProduct(productId));
+    }
   };
 
   const handleChange = (event: SelectChangeEvent<typeof selectedCategories>) => {
@@ -88,9 +78,9 @@ const ProductsPage: React.FC = () => {
   };
 
   const filteredProducts = products
-    .filter(product => selectedCategories.length === 0 || selectedCategories.includes(product.category))
-    .filter(product => !isFiltredFavorites || product.isFavorite)
-    .filter(product => product.title.toLowerCase().includes(searchTerm.toLowerCase()));
+    ?.filter(product => selectedCategories.length === 0 || selectedCategories.includes(product?.category))
+    .filter(product => !isFiltredFavorites || product?.isFavorite)
+    .filter(product => product?.title?.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
@@ -152,7 +142,7 @@ const ProductsPage: React.FC = () => {
               renderValue={(selected) => selected.join(', ')}
               MenuProps={MenuProps}
             >
-              {categories.map((category) => (
+              {categories?.map((category) => (
                 <MenuItem key={category.categoryId} value={category.categoryName}>
                   <Checkbox checked={selectedCategories.indexOf(category.categoryName) > -1} />
                   <ListItemText primary={category.categoryName} />
@@ -164,9 +154,9 @@ const ProductsPage: React.FC = () => {
       </Grid>
 
       <Grid container spacing={2}>
-        {filteredProducts.map((product: Product) => (
+        {filteredProducts?.map((product: Product) => (
           <ProductCard
-            key={product.id}
+            key={product?.id}
             product={product}
             handleFavoriteClick={handleFavoriteClick}
             handleRemoveCard={handleRemoveCard}
